@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treatment Menu & Prices | Acrylic Game Sunninghill</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-cream: #f6faf8;
+            --bg-white: #ffffff;
+            --text-dark: #241b21;
+            --text-muted: #536359;
+            --accent-mint: #b7d5c4;
+            --accent-dark: #8fae9c;
+            --footer-dark: #1b2621;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--footer-dark);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+
+        .menu-toggle-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        /* Circular Frame for Logo */
+        .logo-frame {
+            height: 65px;
+            width: 65px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            background-color: var(--bg-white);
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .nav-right {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            color: white;
+        }
+
+        .nav-right a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* --- SIDE NAVIGATION DRAWER --- */
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: var(--footer-dark);
+            z-index: 100;
+            padding: 40px 30px;
+            transition: left 0.4s ease;
+        }
+
+        .side-drawer.open {
+            left: 0;
+        }
+
+        .close-drawer-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            float: right;
+        }
+
+        .drawer-links {
+            margin-top: 60px;
+            list-style: none;
+        }
+
+        .drawer-links li {
+            margin-bottom: 25px;
+        }
+
+        .drawer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: block;
+        }
+
+        .drawer-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+
+        .menu-section {
+            padding: 60px 0;
+            background: var(--bg-white);
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 50px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 400;
+        }
+
+        .price-list-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .menu-category-block {
+            margin-bottom: 40px;
+        }
+
+        .menu-category-block h3 {
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--text-dark);
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            font-family: var(--font-serif);
+            font-weight: 400;
+        }
+
+        .menu-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .menu-item-dots {
+            flex-grow: 1;
+            border-bottom: 1px dotted #ccc;
+            margin: 0 10px;
+        }
+
+        .menu-item-price {
+            font-weight: 600;
+        }
+
+        .menu-note {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-top: 15px;
+        }
+
+        footer {
+            background-color: var(--footer-dark);
+            color: white;
+            padding: 40px 0 20px 0;
+            margin-top: 60px;
+        }
+
+        .developer-credits {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #a3b8ad;
+        }
+
+        .developer-credits a {
+            color: var(--accent-mint);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 992px) {
+            .price-list-container { grid-template-columns: 1fr; gap: 20px; }
+            .nav-container { grid-template-columns: 1fr auto 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="drawerOverlay" class="drawer-overlay" onclick="toggleDrawer(false)"></div>
+    <div id="sideDrawer" class="side-drawer">
+        <button class="close-drawer-btn" onclick="toggleDrawer(false)">×</button>
+        <ul class="drawer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#booking">General Appointment Consultation</a></li>
+            <li><a href="prices.html">Treatment Menu & Prices</a></li>
+        </ul>
+    </div>
+
+    <header>
+        <div class="container nav-container">
+            <div>
+                <button class="menu-toggle-btn" onclick="toggleDrawer(true)"><i class="fa-solid fa-bars"></i></button>
+            </div>
+            <div>
+                <a href="index.html">
+                    <div class="logo-frame">
+                        <img src="agslogo.jpg" alt="Acrylic Game Logo" class="logo-img">
+                    </div>
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="https://www.instagram.com/acrylic_game_sunninghill/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="menu-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Treatment Price List</h2>
+                    <a href="index.html#booking" style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); text-decoration: none; font-weight: 600;">Book A Session</a>
+                </div>
+                
+                <div class="price-list-container">
+                    <div>
+                        <div class="menu-category-block">
+                            <h3>Acrylic Application</h3>
+                            <div class="menu-item-row"><span class="menu-item-name">Acrylic Colour Overlay</span><span class="menu-item-dots"></span><span class="menu-item-price">R300</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Short Square Tips</span><span class="menu-item-dots"></span><span class="menu-item-price">R280</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Medium Square Tips</span><span class="menu-item-dots"></span><span class="menu-item-price">R300</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Tips (Long / Coffin / Almond)</span><span class="menu-item-dots"></span><span class="menu-item-price">R350</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Ombre Short - Medium Tips</span><span class="menu-item-dots"></span><span class="menu-item-price">R320</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Ombre (Long / Coffin / Almond)</span><span class="menu-item-dots"></span><span class="menu-item-price">R360</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Extra Length Added</span><span class="menu-item-dots"></span><span class="menu-item-price">R50</span></div>
+                        </div>
+
+                        <div class="menu-category-block">
+                            <h3>Gelish Application</h3>
+                            <div class="menu-item-row"><span class="menu-item-name">Gelish Colour Overlay</span><span class="menu-item-dots"></span><span class="menu-item-price">R220</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Gelish French Overlay</span><span class="menu-item-dots"></span><span class="menu-item-price">R280</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Gelish Colour Overlay - Feet</span><span class="menu-item-dots"></span><span class="menu-item-price">R170</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Gelish French Overlay - Feet</span><span class="menu-item-dots"></span><span class="menu-item-price">R220</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Add: Rubber Base</span><span class="menu-item-dots"></span><span class="menu-item-price">R80</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Structure Gel Overlays</span><span class="menu-item-dots"></span><span class="menu-item-price">R320</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Rubber Base Overlays (In Colours)</span><span class="menu-item-dots"></span><span class="menu-item-price">R250</span></div>
+                        </div>
+
+                        <div class="menu-category-block">
+                            <h3>Gel Tips / Soft Gel Tips</h3>
+                            <div class="menu-item-row"><span class="menu-item-name">Short Soft Gel Tips</span><span class="menu-item-dots"></span><span class="menu-item-price">R280</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Medium Soft Gel Tips</span><span class="menu-item-dots"></span><span class="menu-item-price">R300</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Long Soft Gel Tips</span><span class="menu-item-dots"></span><span class="menu-item-price">R340</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Extra Length Added</span><span class="menu-item-dots"></span><span class="menu-item-price">R50</span></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="menu-category-block">
+                            <h3>Structure Acrylic</h3>
+                            <div class="menu-item-row"><span class="menu-item-name">Short Structure Set</span><span class="menu-item-dots"></span><span class="menu-item-price">R330</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Medium Structure Set</span><span class="menu-item-dots"></span><span class="menu-item-price">R360</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Long Structure Set</span><span class="menu-item-dots"></span><span class="menu-item-price">R400</span></div>
+                        </div>
+
+                        <div class="menu-category-block">
+                            <h3>Nail Extensions & Custom Art Extras</h3>
+                            <div class="menu-item-row"><span class="menu-item-name">Foil / Stickers / Chrome Accent</span><span class="menu-item-dots"></span><span class="menu-item-price">R10</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Gel French Detail (Per Nail)</span><span class="menu-item-dots"></span><span class="menu-item-price">R10</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Gel Ombre Detail (Per Nail)</span><span class="menu-item-dots"></span><span class="menu-item-price">R20</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">3D Custom Art Application</span><span class="menu-item-dots"></span><span class="menu-item-price">from R30</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Advanced Structural Nail Art</span><span class="menu-item-dots"></span><span class="menu-item-price">from R30</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Nail Repairs (Per Unit)</span><span class="menu-item-dots"></span><span class="menu-item-price">R30</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Soak Off Treatment ONLY</span><span class="menu-item-dots"></span><span class="menu-item-price">R80</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Soak Off Applied With New Set</span><span class="menu-item-dots"></span><span class="menu-item-price">R60</span></div>
+                            <p class="menu-note">Kindly request an exact nail art graphic quote from your technician prior to application.</p>
+                        </div>
+
+                        <div class="menu-category-block">
+                            <h3>Clinical Aesthetic Menu</h3>
+                            <div class="menu-item-row"><span class="menu-item-name">pH Formula Specialized Facials</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Advanced Microneedling Therapy</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Nanoneedling & Hydra Facials</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Dermaplan Treatment Protocols</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">iS Clinical Deep Care Facials</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Zena Algae Organic Herbal Peel</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Skin Tag Removal Sessions</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Permanent Make Up Artistry</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                            <div class="menu-item-row"><span class="menu-item-name">Fat Dissolving Injections</span><span class="menu-item-dots"></span><span class="menu-item-price">Consult</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container developer-credits">
+            © 2026 Acrylic Game Sunninghill. All Rights Reserved. | <a href="https://palexdigital.pages.dev/" target="_blank">DEVELOPED BY PALEXDIGITAL</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDrawer(openState) {
+            const drawer = document.getElementById('sideDrawer');
+            const overlay = document.getElementById('drawerOverlay');
+            if (openState) {
+                drawer.classList.add('open');
+                overlay.style.display = 'block';
+            } else {
+                drawer.classList.remove('open');
+                overlay.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
